@@ -150,6 +150,11 @@
   "spoiler": false
   },
   {
+  "text": "local n,k=0,0 for _,v in pairs(Ents) do local s=v.prefab and v.prefab:sub(1,4)==\"merm\" and v.components.homeseeker if s and not v:IsInLimbo() then local h=s.home local f=v.components.follower if f and f:GetLeader() then elseif h and h:IsValid() then if v:GetDistanceSqToInst(h)>225 then local x,_,z=h.Transform:GetWorldPosition() if v.Physics then v.Physics:Teleport(x+2.5,0,z) else v.Transform:SetPosition(x+2.5,0,z) end n=n+1 end else k=k+1 end end end c_announce(\"merms moved \"..n..\", no home \"..k)",
+  "label": "Misc (Remote) TP All Stranded Merms back to their homes | Highly recommended for Caves",
+  "spoiler": false
+  },
+  {
     "text": "Hey! I need help adjusting the coordinate values for a custom Don't Starve Together mobile console command. Because of my device's resolution and HUD scale, the virtual buttons/UI elements created by this script aren't aligning correctly with my screen. Here is my current one-liner command: [PASTE YOUR FULL COMMAND STRING HERE] I’ve attached a screenshot of my DST mobile game in-case you need to reference the layout. Can you calculate the math for the new positions/sizes and rewrite this into an updated, single-line command string that I can copy and paste directly into the game console?",
     "label": "Sample prompt to update the button cmds, attach your own screenshot to ai and the command you want to update",
     "spoiler": false
