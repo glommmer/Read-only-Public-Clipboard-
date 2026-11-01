@@ -100,18 +100,23 @@
   "spoiler": false
   },
   {
-  "text": "MW_FM,MW_NM,MW_TRIG,MW_LOCK=11,1,\"!day\",false function MW_Day() local w=TheWorld.state local d=w.cycles+1 local e=w.elapseddaysinseason local y=e+w.remainingdaysinseason local p=w.moonphase local nx={autumn=\"Winter\",winter=\"Spring\",spring=\"Summer\",summer=\"Autumn\"} if w.isnight and not MW_LOCK then if p==\"full\" then MW_FM=d%20 MW_NM=(d+10)%20 elseif p==\"new\" then MW_NM=d%20 MW_FM=(d+10)%20 end end local f=(MW_FM-d)%20 local n=(MW_NM-d)%20 local s=Networking_SystemMessage s(w.season:sub(1,1):upper()..w.season:sub(2)..\" Day \"..(e+1)..\" of \"..y..\" | Moon: \"..tostring(p)) s((y-e-1)..\" days left till \"..nx[w.season]) if MW_LOCK then s(\"Moon locked full until the Celestial Champion falls\") else s(\"Full moon \"..(f==0 and \"TODAY\" or \"in \"..f..\" days\")..\" | Day \"..(d+f)) s(\"New moon \"..(n==0 and \"TODAY\" or \"in \"..n..\" days\")..\" | Day \"..(d+n)) end end --M",
-  "label": "10.1 (Local) Season and Moon cycle info (1/2)",
+  "text": "MW_FM,MW_NM,MW_LOCK,MW_FS=11,1,false,nil function MW_Sync() local w=TheWorld and TheWorld.state if not w then return end local d=w.cycles+1 local p=w.moonphase if p==\"full\" then MW_FS=MW_FS or d if d-MW_FS>=5 then MW_LOCK=true end else MW_FS=nil MW_LOCK=false end if w.isnight and not MW_LOCK then if p==\"full\" then MW_FM=d%20 MW_NM=(d+10)%20 elseif p==\"new\" then MW_NM=d%20 MW_FM=(d+10)%20 end end end --M",
+  "label": "10.1 Season and Moon Cycle Info (1/4)",
   "spoiler": false
   },
   {
-  "text": "local H=ChatHistory H.OrigAdd=H.OrigAdd or H.AddToHistory H.AddToHistory=function(s,t,u,n,nm,msg,...) local r=H.OrigAdd(s,t,u,n,nm,msg,...) if t~=ChatTypes.SystemMessage and type(msg)==\"string\" and msg:lower():find(MW_TRIG,1,true) then local ok,e=pcall(MW_Day) if not ok then Networking_SystemMessage(\"MW day: \"..tostring(e)) end end return r end --M",
-  "label": "10.2 (Local) Season and Moon cycle info | send !day in chat for status (2/2)",
+  "text": "function MW_Day() MW_Sync() local w=TheWorld.state local d=w.cycles+1 local e=w.elapseddaysinseason local y=e+w.remainingdaysinseason local p=w.moonphase local nx={autumn=\"Winter\",winter=\"Spring\",spring=\"Summer\",summer=\"Autumn\"} local f=(MW_FM-d)%20 local n=(MW_NM-d)%20 local s=Networking_SystemMessage s(w.season:sub(1,1):upper()..w.season:sub(2)..\" Day \"..(e+1)..\" of \"..y..\" | Moon: \"..tostring(p)) s((y-e-1)..\" days left till \"..nx[w.season]) if MW_LOCK then s(\"Moon locked full until the Celestial Champion falls\") else s(\"Full moon \"..(f==0 and \"TODAY\" or \"in \"..f..\" days\")..\" | Day \"..(d+f)) s(\"New moon \"..(n==0 and \"TODAY\" or \"in \"..n..\" days\")..\" | Day \"..(d+n)) end end --M",
+  "label": "10.2 Season and Moon Cycle Info (2/4)",
   "spoiler": false
   },
   {
-  "text": "MW_LOCK=false MW_NM=(TheWorld.state.cycles+1)%20 MW_FM=(MW_NM+10)%20",
-  "label": "10.2.1 (Local) Season and Moon cycle info | Only run this command on the day that Celestial Champion is defeated to update the script",
+  "text": "function MW_Watch() local W=TheWorld if W and not W.MW_W then W.MW_W=true for _,k in ipairs{\"moonphase\",\"cycles\",\"isnight\"} do W:WatchWorldState(k,MW_Sync) end MW_Sync() end end MW_Watch() --M",
+  "label": "10.3 Season and Moon Cycle Info (3/4)",
+  "spoiler": false
+  },
+  {
+  "text": "local IB=require \"widgets/imagebutton\" local C=require \"screens/chatinputscreen\" C.MW_O=C.MW_O or C._ctor C._ctor=function(s,...) C.MW_O(s,...) MW_Watch() local W,H=TheSim:GetScreenSize() local w={x=W/2,y=H/2} local k=H/RESOLUTION_Y local b=(s.root or s):AddChild(IB(\"images/global_redux.xml\",\"button_carny_long_normal.tex\",\"button_carny_long_hover.tex\",\"button_carny_long_disabled.tex\",\"button_carny_long_down.tex\")) b:SetScale(.5,.5) b:SetFont(CHATFONT) b:SetTextSize(40) b:SetText(\"Day\") b:SetPosition((0.3519*H-w.x)/k,(H-0.1389*H-w.y)/k) b:SetOnClick(function() local ok,e=pcall(MW_Day) if not ok then Networking_SystemMessage(\"MW day: \"..tostring(e)) end end) end --M",
+  "label": "10.4 Season and Moon Cycle Info (4/4)",
   "spoiler": false
   },
   {
