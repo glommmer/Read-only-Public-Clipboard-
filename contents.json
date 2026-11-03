@@ -168,7 +168,7 @@
   "text": "local P=ThePlayer local T=P.HUD.controls.right_root if T.tt then T.tt:Kill() end if T.ta then T.ta:Cancel() end local W,H=TheSim:GetScreenSize() local w=T:GetWorldPosition() local k=T:GetWorldScale().x local t=T:AddChild(require\"widgets/text\"(DEFAULTFONT,35,\"--\")) T.tt=t t:SetPosition((W*0.9542-w.x)/k,(H*0.7407-w.y)/k) T.ta=P:DoPeriodicTask(1,function() local v for _,f in ipairs{function() return P:GetTemperature() end,function() local c=P.player_classified.currenttemperature return type(c)==\"number\" and c or c:value() end,function() return P.replica.temperature:GetCurrent() end} do local o,x=pcall(f) if o and type(x)==\"number\" then v=x break end end if v then local c=v<=0 and{.5,.8,1}or v>=70 and{1,.4,.4}or{1,1,1} t:SetString(math.floor(v+.5)..\"\\194\\176\") t:SetColour(c[1],c[2],c[3],1) else t:SetString(\"n/a\") end end,0) --M",
   "label": "15 (Local) Player Temperature",
   "spoiler": false
-  }
+  },
   {
     "text": "Hey! I need help adjusting the coordinate values for a custom Don't Starve Together mobile console command. Because of my device's resolution and HUD scale, the virtual buttons/UI elements created by this script aren't aligning correctly with my screen. Here is my current one-liner command: [PASTE YOUR FULL COMMAND STRING HERE] I’ve attached a screenshot of my DST mobile game in-case you need to reference the layout. Can you calculate the math for the new positions/sizes and rewrite this into an updated, single-line command string that I can copy and paste directly into the game console?",
     "label": "Sample prompt to update the button cmds, attach your own screenshot to ai and the command you want to update",
