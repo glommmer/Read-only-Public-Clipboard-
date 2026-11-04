@@ -180,8 +180,8 @@
   "spoiler": false
   },
   {
-  "text": "local P=ThePlayer local T=P.HUD.controls.right_root local g=T.gr if not g.av then g.av=1 local o=g.OnUpdate g.OnUpdate=function() o() pcall(function() local x,_,z=P.Transform:GetWorldPosition() local A,B=TheSim:GetScreenPos(x,0,z) local _,Y=TheSim:GetScreenPos(x,1,z) local u=Y-B for _,d in pairs(T.dd) do if d.shown then local X,V=TheSim:GetScreenPos(d.wx,0,d.wz) if math.abs(X-A)<.6*u and V>B-.3*u and V<B+2*u then d:Hide() end end end end) end end",
-  "label": "15.3 (Local) Farm Tiller (3/3)",
+  "text": "local P=ThePlayer local T=P.HUD.controls.right_root local g=T.gr if not g.av then g.av=1 local o=g.OnUpdate g.OnUpdate=function() o() pcall(function() local x,_,z=P.Transform:GetWorldPosition() local A,B=TheSim:GetScreenPos(x,0,z) local _,Y=TheSim:GetScreenPos(x,1,z) local u=Y-B for _,d in pairs(T.dd) do if d.shown then local X,V=TheSim:GetScreenPos(d.wx,0,d.wz) if math.abs(X-A)<.6*u and V>B-.3*u and V<B+2*u then d:Hide() end end end end) end end --M",
+  "label": "15.3 (Local) Farm Tiller |  Optional fluff (3/3)",
   "spoiler": false
   },
   {
