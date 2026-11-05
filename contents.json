@@ -210,6 +210,11 @@
   "spoiler": false
   },
   {
+  "text": "local H=ChatHistory H.OrigAdd=H.OrigAdd or H.AddToHistory H.MWH=H.MWH or {} H.AddToHistory=function(s,t,u,n,nm,msg,...) if type(msg)==\"string\" then for _,f in pairs(H.MWH) do local ok,r=pcall(f,t,msg) if ok and r then return end end end return H.OrigAdd(s,t,u,n,nm,msg,...) end H.MWH.hide=function(t,m) local a=m:sub(1,4) if a==\"HPB|\" or a==\"MHP:\" or m==\"mb remote ok\" then return true end end --M",
+  "label": "18 (Local) For clients so they don't get spammed by beefalo hp badge or hp bar announcers",
+  "spoiler": false
+  },
+  {
     "text": "Hey! I need help adjusting the coordinate values for a custom Don't Starve Together mobile console command. Because of my device's resolution and HUD scale, the virtual buttons/UI elements created by this script aren't aligning correctly with my screen. Here is my current one-liner command: [PASTE YOUR FULL COMMAND STRING HERE] I’ve attached a screenshot of my DST mobile game in-case you need to reference the layout. Can you calculate the math for the new positions/sizes and rewrite this into an updated, single-line command string that I can copy and paste directly into the game console?",
     "label": "Sample prompt to update the button cmds, attach your own screenshot to ai and the command you want to update",
     "spoiler": false
