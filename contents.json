@@ -190,23 +190,28 @@
   "spoiler": false
   },
   {
-  "text": "local p=ThePlayer if p._hr then p._hr:Cancel() end local c,n={},0 p._hr=p:DoPeriodicTask(.25,function() n=n+1 local x,_,z=p.Transform:GetWorldPosition() local m=\"\" for _,e in ipairs(TheSim:FindEntities(x,0,z,30,{\"_health\"},{\"INLIMBO\",\"playerghost\",\"wall\",\"structure\"})) do local h=e.components.health if h and not h:IsDead() then local f,b=e.components.follower,e.components.combat local k=e:HasTag(\"player\") and 1 or f and f.leader==p and 2 or b and b.target==p and 5 or e:HasTag(\"hostile\") and 4 or 3 local i=e.Network:GetNetworkID() local v=k..\",\"..math.ceil(h.currenthealth)..\",\"..math.ceil(h.maxhealth) if c[i]~=v or n%20==0 then c[i]=v local s=\"|\"..i..\",\"..v if #m+#s>110 then c_announce(\"HPB\"..m) m=\"\" end m=m..s end end end if m~=\"\" then c_announce(\"HPB\"..m) end end) --M",
-  "label": "17.1 (Remote) HP Bars (1/4)",
+  "text": "local H=ChatHistory H.OrigAdd=H.OrigAdd or H.AddToHistory H.MWH=H.MWH or {} H.AddToHistory=function(s,t,u,n,nm,msg,...) if type(msg)==\"string\" then for _,f in pairs(H.MWH) do local ok,r=pcall(f,t,msg) if ok and r then return end end end return H.OrigAdd(s,t,u,n,nm,msg,...) end --M",
+  "label": "17.1 (Local) HP Bars (1/5)",
   "spoiler": false
   },
   {
   "text": "local P=ThePlayer P._hd=P._hd or {} ChatHistory.MWH=ChatHistory.MWH or {} ChatHistory.MWH.hpb=function(t,msg) if msg:sub(1,4)~=\"HPB|\" then return end local T=GetTime() for i,k,c,m in msg:gmatch(\"|(%d+),(%d),(%d+),(%d+)\") do P._hd[tonumber(i)]={tonumber(k),tonumber(c),tonumber(m),T} end return true end --M",
-  "label": "17.2 (Local) HP Bars (2/4)",
+  "label": "17.2 (Local) HP Bars (2/5)",
   "spoiler": false
   },
   {
   "text": "local P=ThePlayer local C=P.HUD.controls if C.hpb then C.hpb:Kill() end P._hd=P._hd or {} local Wd,Im,Tx=require\"widgets/widget\",require\"widgets/image\",require\"widgets/text\" local R=C:AddChild(Wd(\"hpb\")) C.hpb=R R.B={} R.E={} R.q=0 R.K={{.3,.5,1},{.3,1,.3},{.6,.6,.6},{.55,0,0},{1,.1,.1}} R.mk=function(i) local b=R:AddChild(Wd(\"b\")) R.B[i]=b b.g=b:AddChild(Im(\"images/global.xml\",\"square.tex\")) b.g:SetTint(0,0,0,.6) b.g:ScaleToSize(72,9) b.f=b:AddChild(Im(\"images/global.xml\",\"square.tex\")) b.t=b:AddChild(Tx(TALKINGFONT,35,\"\")) b.t:SetPosition(0,26) return b end R:MoveToBack() --M",
-  "label": "17.3 (Local) HP Bars (3/4)",
+  "label": "17.3 (Local) HP Bars (3/5)",
   "spoiler": false
   },
   {
-  "text": "local P=ThePlayer local C=P.HUD.controls local R=C.hpb local w=C:GetWorldPosition() local k=C:GetScale().x R.OnUpdate=function(s,dt) R.q=R.q-dt local T=GetTime() if R.q<=0 then R.q=.5 R.E={} local x,_,z=P.Transform:GetWorldPosition() for _,e in ipairs(TheSim:FindEntities(x,0,z,40,{\"_health\"},{\"INLIMBO\"})) do local o,i=pcall(function() return e.Network:GetNetworkID() end) if o and i then R.E[i]=e end end end for i,d in pairs(P._hd) do local e,b=R.E[i],R.B[i] if T-d[4]>8 then P._hd[i]=nil if b then b:Kill() R.B[i]=nil end elseif e and e:IsValid() then b=b or R.mk(i) local p=d[3]>0 and math.min(d[2]/d[3],1) or 1 local c=R.K[d[1]] b.f:SetTint(c[1],c[2],c[3],1) b.f:ScaleToSize(70*p+.1,7) b.f:SetPosition(-35+35*p,0) b.t:SetString(d[2]..\"/\"..d[3]) local x,y,z=e.Transform:GetWorldPosition() local a,u=TheSim:GetScreenPos(x,y+3,z) b:SetPosition((a-w.x)/k,(u-w.y)/k) b:Show() elseif b then b:Hide() end end end R:StartUpdating() --M",
-  "label": "17.4 (Local) HP Bars (4/4)",
+  "text": "local P=ThePlayer local C=P.HUD.controls local R=C.hpb local w=C:GetWorldPosition() local k=C:GetScale().x R.OnUpdate=function(s,dt) R.q=R.q-dt local T=GetTime() if R.q<=0 then R.q=.5 R.E={} local x,_,z=P.Transform:GetWorldPosition() for _,e in ipairs(TheSim:FindEntities(x,0,z,40,{\"_health\"},{\"INLIMBO\"})) do local o,i=pcall(function() return e.Network:GetNetworkID() end) if o and i then R.E[i]=e end end end for i,d in pairs(P._hd) do local e,b=R.E[i],R.B[i] if T-d[4]>8 or d[1]<1 then P._hd[i]=nil if b then b:Kill() R.B[i]=nil end elseif e and e~=P and e:IsValid() then b=b or R.mk(i) local p=d[3]>0 and math.min(d[2]/d[3],1) or 1 local c=R.K[d[1]] b.f:SetTint(c[1],c[2],c[3],1) b.f:ScaleToSize(70*p+.1,7) b.f:SetPosition(-35+35*p,0) b.t:SetString(d[2]..\"/\"..d[3]) local x,y,z=e.Transform:GetWorldPosition() local a,u=TheSim:GetScreenPos(x,y+3,z) b:SetPosition((a-w.x)/k,(u-w.y)/k) b:Show() elseif b then b:Hide() end end end R:StartUpdating() --M",
+  "label": "17.4 (Local) HP Bars (4/5)",
+  "spoiler": false
+  },
+  {
+  "text": "local p=ThePlayer if p._hr then p._hr:Cancel() end local c,n={},0 p._hr=p:DoPeriodicTask(.25,function() n=n+1 local x,_,z=p.Transform:GetWorldPosition() local m,u=\"\",{} local function A(s) if #m+#s>110 then c_announce(\"HPB\"..m) m=\"\" end m=m..s end for _,e in ipairs(TheSim:FindEntities(x,0,z,30,{\"_health\"},{\"INLIMBO\",\"playerghost\",\"wall\",\"structure\"})) do local h=e.components.health if h and not h:IsDead() and e.prefab:sub(1,4)~=\"boat\" and e.prefab:sub(-6)~=\"eplant\" then local f,b=e.components.follower,e.components.combat local k=e:HasTag(\"player\") and 1 or f and f.leader==p and 2 or b and b.target==p and 5 or e:HasTag(\"hostile\") and 4 or 3 local i=e.Network:GetNetworkID() local v=k..\",\"..math.ceil(h.currenthealth)..\",\"..math.ceil(h.maxhealth) u[i]=1 if c[i]~=v or n%20==0 then c[i]=v A(\"|\"..i..\",\"..v) end end end for i in pairs(c) do if not u[i] then c[i]=nil A(\"|\"..i..\",0,0,0\") end end if m~=\"\" then c_announce(\"HPB\"..m) end end) --M",
+  "label": "17.5 (Local) HP Bars (5/5)",
   "spoiler": false
   },
   {
