@@ -302,11 +302,15 @@ function draw(){
   var g=el("g",{stroke:"#ffffff","stroke-opacity":".55","stroke-width":tick*.45},ov);
   for(var i=0;i*0.05*H<=W;i++){var x=i*0.05*H,big=i%2===0;el("line",{x1:x,y1:0,x2:x,y2:big?tick*5:tick*2.5},g);}
   for(var j=0;j*0.05*H<=H;j++){var y=j*0.05*H,bigy=j%2===0;el("line",{x1:0,y1:y,x2:bigy?tick*5:tick*2.5,y2:y},g);}
-  var sel=px(st.sel),sp=el("g",{stroke:"#e7b24a","stroke-width":tick*.5,"stroke-dasharray":(tick*3)+" "+(tick*2),"stroke-opacity":".9"},ov);
-  el("line",{x1:0,y1:sel.y,x2:W,y2:sel.y},sp);el("line",{x1:sel.x,y1:0,x2:sel.x,y2:H},sp);
   var bw=btnW();
+  /* crosshair: follow dynamic marker when one is selected */
+  var cx,cy;
+  if(dyn.sel!=null&&dyn.marks[dyn.sel]){cx=dyn.marks[dyn.sel].x;cy=dyn.marks[dyn.sel].y;}
+  else{var sel=px(st.sel);cx=sel.x;cy=sel.y;}
+  var sp=el("g",{stroke:"#e7b24a","stroke-width":tick*.5,"stroke-dasharray":(tick*3)+" "+(tick*2),"stroke-opacity":".9"},ov);
+  el("line",{x1:0,y1:cy,x2:W,y2:cy},sp);el("line",{x1:cx,y1:0,x2:cx,y2:H},sp);
   Object.keys(DEFAULTS).forEach(function(id){
-    var d=DEFAULTS[id],p=px(id),on=st.inc[groupOf(id)],isSel=id===st.sel;
+    var d=DEFAULTS[id],p=px(id),gid=groupOf(id),on=gid?st.inc[gid]!==false:true,isSel=dyn.sel==null&&id===st.sel;
     var gg=el("g",{"class":"ghost",transform:"translate("+p.x+","+p.y+")","data-id":id,opacity:on?1:.35},ov);
     if(d.kind==="badge"){
       var r=H*0.047;
@@ -319,19 +323,22 @@ function draw(){
     }
     gg.addEventListener("pointerdown",function(e){startDrag(e,id,gg);});
   });
-  /* dynamic ? markers from pasted script */
+  /* dynamic ? markers — always on top, brighter so multi-mark is obvious */
   dyn.marks.forEach(function(m,i){
     var isSel=dyn.sel===i;
-    var gg=el("g",{"class":"ghost",transform:"translate("+m.x+","+m.y+")","data-dyn":String(i)},ov);
-    el("rect",{x:-bw/2,y:-bw/2,width:bw,height:bw,rx:bw*0.06,fill:"#6b7280","fill-opacity":".55",stroke:isSel?"#e7b24a":"#9ca3af","stroke-width":isSel?tick*1.1:tick*.7},gg);
-    el("text",{y:bw*0.12,"text-anchor":"middle",fill:"#fff","font-size":bw*0.45,"font-family":"sans-serif","font-weight":700},gg).textContent=m.label||"?";
+    var x=Number(m.x),y=Number(m.y);
+    if(!isFinite(x)||!isFinite(y))return;
+    var gg=el("g",{"class":"ghost",transform:"translate("+x+","+y+")","data-dyn":String(i)},ov);
+    el("rect",{x:-bw/2,y:-bw/2,width:bw,height:bw,rx:bw*0.06,fill:"#f59e0b","fill-opacity":isSel?".75":".6",stroke:isSel?"#fff":"#fbbf24","stroke-width":isSel?tick*1.4:tick*.9},gg);
+    el("text",{y:bw*0.14,"text-anchor":"middle",fill:"#1b1405","font-size":bw*0.42,"font-family":"sans-serif","font-weight":700},gg).textContent=m.label||("?"+(i+1));
     gg.addEventListener("pointerdown",function(e){startDynDrag(e,i,gg);});
   });
   if(dyn.sel!=null&&dyn.marks[dyn.sel]){
     var dm=dyn.marks[dyn.sel];
     $("selname").textContent="? "+(dm.label||(dyn.sel+1))+"  ·  "+Math.round(dm.x)+", "+Math.round(dm.y);
   }else{
-    $("selname").textContent=DEFAULTS[st.sel].label+"  ·  "+sel.x+", "+sel.y;
+    var p0=px(st.sel);
+    $("selname").textContent=DEFAULTS[st.sel].label+"  ·  "+p0.x+", "+p0.y;
   }
 }
 function groupOf(id){for(var i=0;i<GROUPS.length;i++)if(GROUPS[i].items.indexOf(id)>-1)return GROUPS[i].id;}
@@ -630,14 +637,15 @@ function rebuildDynScript(){
 function runDynParse(){
   var text=($("dynin")&&$("dynin").value)||"";
   if(!text.trim()){$("dynstatus").textContent="Paste a script first.";return;}
-  dyn.script=text;dyn.marks=parseDynScript(text);dyn.sel=null;
+  dyn.script=text;dyn.marks=parseDynScript(text);dyn.sel=dyn.marks.length?0:null;
   if(!dyn.marks.length){
     $("dynstatus").textContent="No screen coordinates found. Need SetPosition((X-w.x)/k,(Y-w.y)/k) or R(...,X,Y) with W/H math.";
     $("dynout").hidden=true;draw();return;
   }
   $("dynout").hidden=false;$("dynout").value=text;
-  $("dynstatus").textContent="Found "+dyn.marks.length+" position(s). Drag the ? markers, then Copy updated script.";
-  draw();
+  var bits=dyn.marks.map(function(m,i){return (m.label||("?"+(i+1)))+" @ "+m.x+","+m.y;});
+  $("dynstatus").textContent="Found "+dyn.marks.length+": "+bits.join(" · ")+" — drag orange markers, then Copy.";
+  draw();syncFields();
 }
 (function(){
   var bp=$("dynparse"),bc=$("dynclear"),bo=$("dyncopy");
