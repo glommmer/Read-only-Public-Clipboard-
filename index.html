@@ -48,7 +48,7 @@ body {
 }
 .header-left h1 { font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 7px; }
 .header-left .hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.header-controls { display: flex; align-items: center; gap: 8px; }
+.header-controls { display: flex; align-items: center; gap: 8px; position: relative; }
 
 .sync-dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -93,7 +93,6 @@ body {
   background: var(--text-accent); flex-shrink: 0;
 }
 
-/* Single-line horizontal scrollable code box */
 .clip-text-container {
   background: var(--code-bg);
   border: 1px solid var(--border);
@@ -103,13 +102,8 @@ body {
   white-space: nowrap;
   scrollbar-width: thin;
 }
-.clip-text-container::-webkit-scrollbar {
-  height: 4px;
-}
-.clip-text-container::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 2px;
-}
+.clip-text-container::-webkit-scrollbar { height: 4px; }
+.clip-text-container::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
 
 .clip-text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -145,6 +139,101 @@ body {
   grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;
   color: var(--text-muted); font-size: 14px;
 }
+
+/* ── Search bar ─────────────────────────────────────────────── */
+.search-wrap {
+  padding: 0.75rem 1.25rem;
+  background: var(--bg);
+  border-bottom: 0.5px solid var(--border);
+  z-index: 50;
+  transition: box-shadow 0.2s;
+}
+.search-wrap.sticky {
+  position: sticky; top: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.search-box { position: relative; display: flex; align-items: center; }
+.search-box input {
+  width: 100%;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 36px 9px 36px;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-box input:focus { border-color: var(--text-accent); }
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box .search-icon { position: absolute; left: 11px; color: var(--text-muted); font-size: 16px; pointer-events: none; }
+.search-box .clear-btn {
+  position: absolute; right: 8px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 16px; padding: 4px;
+  border-radius: 4px; display: none; line-height: 1;
+}
+.search-box .clear-btn:hover { color: var(--text-primary); }
+.search-box.has-text .clear-btn { display: flex; }
+
+/* ── Bell badge ─────────────────────────────────────────────── */
+.bell-wrap { position: relative; display: flex; align-items: center; }
+.bell-badge {
+  position: absolute; top: -2px; right: -4px;
+  min-width: 16px; height: 16px;
+  background: var(--red); color: #fff;
+  font-size: 10px; font-weight: 700;
+  border-radius: 8px;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 0 4px; line-height: 1;
+  pointer-events: none;
+}
+.bell-badge.show { display: flex; }
+
+/* ── Notif panel (Mobile Responsive Fix) ────────────────────── */
+.notif-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px); right: 0;
+  width: min(340px, calc(100vw - 24px));
+  max-height: 360px; overflow-y: auto;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  z-index: 100; padding: 8px 0;
+}
+.notif-panel.open { display: block; }
+
+@media (max-width: 480px) {
+  .notif-panel {
+    position: fixed;
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: 70vh;
+  }
+}
+
+.notif-panel .notif-item {
+  padding: 10px 14px;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 13px; line-height: 1.4;
+  color: var(--text-primary);
+}
+.notif-panel .notif-item:last-child { border-bottom: none; }
+.notif-panel .notif-item.unread { background: rgba(107,159,212,0.08); }
+.notif-panel .notif-meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.notif-panel .notif-empty { padding: 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
+.notif-panel .notif-footer {
+  padding: 8px 14px; border-top: 0.5px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.notif-panel .notif-footer a { font-size: 12px; color: var(--text-accent); text-decoration: none; }
+.notif-panel .notif-footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -156,8 +245,21 @@ body {
   </div>
   <div class="header-controls">
     <div class="sync-dot" id="sync-dot" title="Load status"></div>
+    <div class="bell-wrap">
+      <button class="icon-btn" id="bell-btn" title="Notifications"><i class="ti ti-bell"></i></button>
+      <span class="bell-badge" id="bell-badge">0</span>
+      <div class="notif-panel" id="notif-panel"></div>
+    </div>
     <button class="icon-btn" id="refresh-btn" title="Refresh"><i class="ti ti-refresh"></i></button>
     <button class="icon-btn" id="theme-toggle" title="Toggle theme"><i class="ti ti-sun" id="theme-icon"></i></button>
+  </div>
+</div>
+
+<div class="search-wrap" id="search-wrap">
+  <div class="search-box" id="search-box">
+    <i class="ti ti-search search-icon"></i>
+    <input type="text" id="search-input" placeholder="Filter by number or label…" autocomplete="off" spellcheck="false">
+    <button class="clear-btn" id="search-clear" title="Clear"><i class="ti ti-x"></i></button>
   </div>
 </div>
 
@@ -165,39 +267,123 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Config ───────────────────────────────────────────────────
 const JSON_URL = './contents.json';
+const NOTIF_JSON_URL = './bellnotifs.json';
+const READ_NOTIFS_KEY = 'clip-bell-read-ids';
 
 const LABELS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const isDesktop = window.matchMedia('(pointer: fine)').matches;
 document.getElementById('action-hint').textContent =
   isDesktop ? 'Click card to copy' : 'Tap card to copy';
 
-// ── State ─────────────────────────────────────────────────────
 let clips = [];
+let notifs = [];
+let searchQuery = '';
 
-// ── Sync dot ──────────────────────────────────────────────────
 const syncDot = document.getElementById('sync-dot');
 function setSyncStatus(s) { syncDot.className = 'sync-dot' + (s ? ' ' + s : ''); }
 
-// ── Normalize ─────────────────────────────────────────────────
-function normalizeClips(data) {
-  if (!Array.isArray(data)) return [];
-  return data.map((item, i) => {
-    if (typeof item === 'string') {
-      return { text: item, label: 'Clip ' + (LABELS[i] || (i + 1)) };
-    }
-    if (item && typeof item === 'object') {
-      return {
-        text: item.text || '',
-        label: item.label || ('Clip ' + (LABELS[i] || (i + 1)))
-      };
-    }
-    return { text: '', label: 'Clip ' + (LABELS[i] || (i + 1)) };
-  });
+function getReadIds() {
+  try { return JSON.parse(localStorage.getItem(READ_NOTIFS_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveReadIds(ids) {
+  localStorage.setItem(READ_NOTIFS_KEY, JSON.stringify(ids));
+}
+function getUnreadCount() {
+  const readSet = new Set(getReadIds());
+  return notifs.filter(n => !readSet.has(n.id)).length;
+}
+function updateBellBadge() {
+  const badge = document.getElementById('bell-badge');
+  const count = getUnreadCount();
+  badge.textContent = count > 99 ? '99+' : String(count);
+  badge.classList.toggle('show', count > 0);
 }
 
-// ── Fetch ─────────────────────────────────────────────────────
+function timeAgoShort(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  if (s < 86400 * 7) return Math.floor(s / 86400) + 'd ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+function renderNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  const readSet = new Set(getReadIds());
+  const list = notifs.slice().reverse();
+
+  if (list.length === 0) {
+    panel.innerHTML = '<div class="notif-empty">No notifications</div>';
+    return;
+  }
+
+  let html = list.map(n => {
+    const isUnread = !readSet.has(n.id);
+    return `
+      <div class="notif-item${isUnread ? ' unread' : ''}">
+        <div>${escapeHtml(n.text)}</div>
+        <div class="notif-meta">${timeAgoShort(n.ts)}</div>
+      </div>`;
+  }).join('');
+
+  html += `<div class="notif-footer">
+    <a href="#" id="mark-all-read">Mark all read</a>
+    <span></span>
+  </div>`;
+  panel.innerHTML = html;
+
+  const markBtn = document.getElementById('mark-all-read');
+  if (markBtn) {
+    markBtn.addEventListener('click', e => {
+      e.preventDefault();
+      const allIds = notifs.map(n => n.id);
+      saveReadIds(allIds);
+      updateBellBadge();
+      renderNotifPanel();
+    });
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const bellBtn = document.getElementById('bell-btn');
+const notifPanel = document.getElementById('notif-panel');
+
+bellBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = notifPanel.classList.toggle('open');
+  if (open) {
+    renderNotifPanel();
+    const allIds = notifs.map(n => n.id);
+    saveReadIds(allIds);
+    updateBellBadge();
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!notifPanel.contains(e.target) && e.target !== bellBtn && !bellBtn.contains(e.target)) {
+    notifPanel.classList.remove('open');
+  }
+});
+
+async function loadNotifs() {
+  try {
+    const res = await fetch(NOTIF_JSON_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      notifs = Array.isArray(data) ? data : [];
+      updateBellBadge();
+    }
+  } catch (err) {
+    console.error('Failed to load bellnotifs.json', err);
+  }
+}
+
 async function loadClips() {
   try {
     setSyncStatus('busy');
@@ -215,7 +401,51 @@ async function loadClips() {
   }
 }
 
-// ── Toast ─────────────────────────────────────────────────────
+function normalizeClips(data) {
+  if (!Array.isArray(data)) return [];
+  return data.map((item, i) => {
+    if (typeof item === 'string') {
+      return { text: item, label: 'Clip ' + (LABELS[i] || (i + 1)) };
+    }
+    if (item && typeof item === 'object') {
+      return {
+        text: item.text || '',
+        label: item.label || ('Clip ' + (LABELS[i] || (i + 1)))
+      };
+    }
+    return { text: '', label: 'Clip ' + (LABELS[i] || (i + 1)) };
+  });
+}
+
+const searchWrap = document.getElementById('search-wrap');
+const searchBox = document.getElementById('search-box');
+const searchInput = document.getElementById('search-input');
+const searchClear = document.getElementById('search-clear');
+
+function updateSearchUI() {
+  const has = searchQuery.length > 0;
+  searchBox.classList.toggle('has-text', has);
+  searchWrap.classList.toggle('sticky', has);
+}
+
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value.trim().toLowerCase();
+  updateSearchUI();
+  render();
+});
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchQuery = '';
+  updateSearchUI();
+  render();
+  searchInput.focus();
+});
+
+function clipMatches(clip, q) {
+  if (!q) return true;
+  return (clip.label || '').toLowerCase().includes(q);
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -224,7 +454,6 @@ function showToast(msg) {
   t._tid = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// ── Last-copied timestamps (localStorage) ─────────────────────
 const LAST_COPIED_KEY = 'clip-last-copied';
 function getLastCopiedMap() {
   try { return JSON.parse(localStorage.getItem(LAST_COPIED_KEY) || '{}'); }
@@ -245,21 +474,17 @@ function timeAgo(ts) {
   return new Date(ts).toLocaleDateString();
 }
 
-// ── Copy ──────────────────────────────────────────────────────
 function executeCopy(text, label) {
   if (!text) return;
   const onSuccess = () => {
     showToast('Copied!');
     if (label) {
       setLastCopied(label);
-      // Update just the ago text on this card if possible, else full re-render is fine
       render();
     }
   };
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text)
-      .then(onSuccess)
-      .catch(() => fallbackCopy(text, onSuccess));
+    navigator.clipboard.writeText(text).then(onSuccess).catch(() => fallbackCopy(text, onSuccess));
   } else {
     fallbackCopy(text, onSuccess);
   }
@@ -270,16 +495,11 @@ function fallbackCopy(text, onSuccess) {
   ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px';
   document.body.appendChild(ta);
   ta.select();
-  try {
-    document.execCommand('copy');
-    onSuccess();
-  } catch {
-    showToast('Copy failed');
-  }
+  try { document.execCommand('copy'); onSuccess(); }
+  catch { showToast('Copy failed'); }
   document.body.removeChild(ta);
 }
 
-// ── Theme ─────────────────────────────────────────────────────
 const htmlEl = document.documentElement;
 const themeIcon = document.getElementById('theme-icon');
 let isLight = localStorage.getItem('theme') === 'light';
@@ -294,13 +514,16 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 });
 updateTheme();
 
-// ── Refresh ───────────────────────────────────────────────────
-document.getElementById('refresh-btn').addEventListener('click', () => loadClips());
+document.getElementById('refresh-btn').addEventListener('click', () => {
+  loadClips();
+  loadNotifs();
+});
 
-// ── Render ────────────────────────────────────────────────────
 function render() {
   const board = document.getElementById('board');
   board.innerHTML = '';
+
+  const filtered = clips.filter(c => clipMatches(c, searchQuery));
 
   if (clips.length === 0) {
     const empty = document.createElement('div');
@@ -310,26 +533,30 @@ function render() {
     return;
   }
 
-  clips.forEach((clip) => {
+  if (filtered.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = 'No clips match “' + searchQuery + '”';
+    board.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach((clip) => {
     const card = document.createElement('div');
     card.className = 'clip-card';
 
-    // Label
     const labelEl = document.createElement('div');
     labelEl.className = 'clip-label';
     labelEl.textContent = clip.label;
 
-    // One-line scrollable container
     const textContainer = document.createElement('div');
     textContainer.className = 'clip-text-container';
 
-    // Text content
     const textEl = document.createElement('div');
     textEl.className = 'clip-text' + (clip.text ? '' : ' empty');
     textEl.textContent = clip.text ? clip.text.replace(/\r?\n|\r/g, ' ') : '(empty)';
     textContainer.appendChild(textEl);
 
-    // Actions (time-ago left of copy icon, same row → no extra height)
     const actions = document.createElement('div');
     actions.className = 'actions';
 
@@ -356,8 +583,6 @@ function render() {
     }
 
     card.append(labelEl, textContainer, actions);
-
-    // Whole card copies full string on click/tap
     card.addEventListener('click', () => {
       if (clip.text) executeCopy(clip.text, clip.label);
     });
@@ -366,13 +591,10 @@ function render() {
   });
 }
 
-// Keep relative times fresh while the page stays open
-setInterval(() => {
-  if (clips.length) render();
-}, 30000);
+setInterval(() => { if (clips.length) render(); }, 30000);
 
-// ── Start ─────────────────────────────────────────────────────
 loadClips();
+loadNotifs();
 </script>
 </body>
 </html>
