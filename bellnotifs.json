@@ -6,7 +6,17 @@
   },
   {
     "id": "mw5qes02c467",
-    "text": "Fixed HP Bar's 17.5.1 Remote mistakenly labeled local. Added 17.5.2   as a alternative remote hp bar option so the HP bar only works for mobs with 1400 MAX HP and above! Less clutter amiright?",
+    "text": "Fixed HP Bar's 17.5.1 Remote mistakenly labeled local. Added 17.5.2   as an alternative remote hp bar option so the HP bar only works for mobs with 1400 MAX HP and above! Less clutter amiright?",
     "ts": 1794015335234
+  },
+  {
+    "id": "mw6cnddfglgc",
+    "text": "Updated 7 Move Items (One tap to move items) Buttons are now hidden when there's no relevant storage for them, now auto activates when there is. The text is replaced with icons. MW Watch seemed to be missing from the clips but it is added now. Teehee",
+    "ts": 1794052687732
+  },
+  {
+    "id": "mw6cpvwoborr",
+    "text": "Fixed 10 Season and moon cycle info's  same function name with Move Items.",
+    "ts": 1794052805064
   }
 ]
