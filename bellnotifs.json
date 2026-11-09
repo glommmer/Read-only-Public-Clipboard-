@@ -28,5 +28,10 @@
     "id": "mw7u646lulat",
     "text": "Removed Networking Messages for Auto-run and Farm tiller.",
     "ts": 1794142581933
+  },
+  {
+    "id": "mw8kq4ciq1pf",
+    "text": "Fixed (20) Minimap bug causing movement to randomly be unresponsive but bugged zooming instead. Now you cannot zoom if you use the minimap cmd! (You can still zoom the minimap though). Let's just say it's a cmd limitation",
+    "ts": 1794187185282
   }
 ]

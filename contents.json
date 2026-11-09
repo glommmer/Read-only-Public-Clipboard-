@@ -196,11 +196,11 @@
     "label": "19.3 (Local) Lock Mode Tap to target (optional) target pointer (3/3)"
   },
   {
-    "text": "local P=ThePlayer local C=P.HUD.controls local M=TheWorld.minimap.MiniMap if C.mm then C.mm:Kill() end if C.mt then C.mt:Cancel() end local im=require\"widgets/image\"() local T=C.topleft_root C.mm=T:AddChild(im) im:SetClickable(false) im.inst.ImageWidget:SetTextureHandle(M:GetTextureHandle()) im.inst.ImageWidget:SetBlendMode(BLENDMODE.Additive) local W,H=TheSim:GetScreenSize() local w=T:GetWorldPosition() local k=T:GetWorldScale().x local a,b=im:GetSize() a=a>0 and a or W b=b>0 and b or H local s=H*.3/(b*k) im:SetScale(s) im:SetPosition((W*.15-w.x)/k,(H*.85-w.y)/k) im:MoveToBack() C.mt=P:DoPeriodicTask(.4,function() local o=P.HUD:IsMapScreenOpen() if not o and not M:IsVisible() then M:ToggleVisibility() end if o then im:Hide() else im:Show() end end) --M",
+    "text": "local P=ThePlayer;local C=P.HUD.controls;local M=TheWorld.minimap.MiniMap;if C.mm then C.mm:Kill()end;if C.mt then C.mt:Cancel()end;local im=require\"widgets/image\"();local T=C.topleft_root;C.mm=T:AddChild(im);im:SetClickable(false);im.inst.ImageWidget:SetTextureHandle(M:GetTextureHandle());im.inst.ImageWidget:SetBlendMode(BLENDMODE.Additive);local W,H=TheSim:GetScreenSize();local w=T:GetWorldPosition();local k=T:GetWorldScale().x;local a,b=im:GetSize();a=a>0 and a or W;b=b>0 and b or H;local s=H*.3/(b*k);im:SetScale(s);im:SetPosition((W*.15-w.x)/k,(H*.85-w.y)/k);im:MoveToBack();C.mt=P:DoPeriodicTask(.4,function()local o=P.HUD:IsMapScreenOpen();if not o and not M:IsVisible()then M:ToggleVisibility()end;if o then im:Hide()else im:Show()end end) --M",
     "label": "20.1 (Local) Minimap (1/3) You need to reposition it with my btn placer | The stick will not work until 20.2 is ran after"
   },
   {
-    "text": "local P=ThePlayer local C=P.HUD.controls local M=TheWorld.minimap.MiniMap if C.mt then C.mt:Cancel() end C.mt=P:DoPeriodicTask(.5,function() if P.HUD:IsMapScreenOpen() then return end if not M:IsVisible() then M:ToggleVisibility() end P:DoTaskInTime(.1,function() if M:IsVisible() and not P.HUD:IsMapScreenOpen() then M:ToggleVisibility() end end) end) --M",
+    "text": "local V=require\"widgets/virtualstick\";V.IsTouchPositionOnStick=function(s,x,y)local t=Vector3(x,y,0);local p=s.bg:GetWorldPosition();t.x=t.x-p.x;t.y=t.y-p.y;return t:Length()<=(200*(s:GetWorldScale().x/s:GetLooseScale()))end --M",
     "label": "20.2 (Local) Minimap (2/3) to zoom, open the map and zoom. note that the last position before you close the map will be the center of the minimap"
   },
   {
