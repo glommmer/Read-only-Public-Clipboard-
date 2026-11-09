@@ -208,6 +208,10 @@
     "label": "20.3 (Local) Minimap (3/3) Optional fade and remove btn bg"
   },
   {
+    "text": "local s=ThePlayer.HUD.controls.virtualstick s.IsTouchPositionOnStick=function(a,x,y) local b=a.bg:GetWorldPosition() local dx,dy=x-b.x,y-b.y return math.sqrt(dx*dx+dy*dy)<=200*(a:GetWorldScale().x/a:GetLooseScale()) end --M",
+    "label": "20.4 (local) minimap optional movement fix (misc)  Only for people having issues with dpad"
+  },
+  {
     "text": "Hey! I need help adjusting the coordinate values for a custom Don't Starve Together mobile console command. Because of my device's resolution and HUD scale, the virtual buttons/UI elements created by this script aren't aligning correctly with my screen. Here is my current one-liner command: [PASTE YOUR FULL COMMAND STRING HERE] I’ve attached a screenshot of my DST mobile game in-case you need to reference the layout. Can you calculate the math for the new positions/sizes and rewrite this into an updated, single-line command string that I can copy and paste directly into the game console?",
     "label": "Sample prompt to update the button cmds, attach your own screenshot to ai and the command you want to update"
   }

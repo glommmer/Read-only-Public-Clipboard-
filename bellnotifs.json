@@ -30,8 +30,8 @@
     "ts": 1794142581933
   },
   {
-    "id": "mw8kq4ciq1pf",
-    "text": "Fixed (20) Minimap bug causing movement to randomly be unresponsive but bugged zooming instead. Now you cannot zoom if you use the minimap cmd! (You can still zoom the minimap though). Let's just say it's a cmd limitation",
-    "ts": 1794187185282
+    "id": "mw904fljsmh5",
+    "text": "Added an optional Minimap (20.4) Dpad fix. Only run if you have movement issues after running minimap.  Earlier zoom bug notification was a false alarm.",
+    "ts": 1794213047289
   }
 ]
