@@ -30,11 +30,6 @@
     "ts": 1794142581933
   },
   {
-    "id": "mw904fljsmh5",
-    "text": "Added an optional Minimap (20.4) Dpad fix. Only run if you have movement issues after running minimap.  Earlier zoom bug notification was a false alarm.",
-    "ts": 1794213047289
-  },
-  {
     "id": "mw9ue249ool9",
     "text": "Added MISC Prevent other characters from picking up Winona's Winbot",
     "ts": 1794263884857
@@ -43,5 +38,10 @@
     "id": "mw9ueosuzgjy",
     "text": "Added Testserver Free crafting and Godmode",
     "ts": 1794263914255
+  },
+  {
+    "id": "mwanb4z0ou7m",
+    "text": "Updated minimap 20.2 to prevent possible movement or pinch zoom issues. Changed 20.4 to an optional toggle to hide and show the minimap! Tap the brain icon to hide/show",
+    "ts": 1794312457452
   }
 ]

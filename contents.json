@@ -200,7 +200,7 @@
     "label": "20.1 (Local) Minimap (1/3) You need to reposition it with my btn placer | The stick will not work until 20.2 is ran after"
   },
   {
-    "text": "local V=require\"widgets/virtualstick\";V.IsTouchPositionOnStick=function(s,x,y)local t=Vector3(x,y,0);local p=s.bg:GetWorldPosition();t.x=t.x-p.x;t.y=t.y-p.y;return t:Length()<=(200*(s:GetWorldScale().x/s:GetLooseScale()))end --M",
+    "text": "local s=ThePlayer.HUD.controls.virtualstick s.IsTouchPositionOnStick=function(a,x,y) local b=a.bg:GetWorldPosition() local dx,dy=x-b.x,y-b.y return math.sqrt(dx*dx+dy*dy)<=200*(a:GetWorldScale().x/a:GetLooseScale()) end --M",
     "label": "20.2 (Local) Minimap (2/3) to zoom, open the map and zoom. note that the last position before you close the map will be the center of the minimap"
   },
   {
@@ -208,8 +208,8 @@
     "label": "20.3 (Local) Minimap (3/3) Optional fade and remove btn bg"
   },
   {
-    "text": "local s=ThePlayer.HUD.controls.virtualstick s.IsTouchPositionOnStick=function(a,x,y) local b=a.bg:GetWorldPosition() local dx,dy=x-b.x,y-b.y return math.sqrt(dx*dx+dy*dy)<=200*(a:GetWorldScale().x/a:GetLooseScale()) end --M",
-    "label": "20.4 (local) minimap optional movement fix | Only for people having issues with dpad"
+    "text": "local P=ThePlayer local C=P.HUD.controls local M=TheWorld.minimap.MiniMap local b=C.status.brain b._oc=b._oc or b.OnControl local function W() local im=C.mm local o=P.HUD:IsMapScreenOpen() if not o and not M:IsVisible() then M:ToggleVisibility() end if o then im:Hide() else im:Show() end end P._mmt=function() if not C.mm then return end local T=GetTime() if P._mmz and T-P._mmz<.4 then return end P._mmz=T if C.mt then C.mt:Cancel() C.mt=nil end if P._mmo then P._mmo=nil b:SetFadeAlpha(1) W() C.mt=P:DoPeriodicTask(.4,W) ChatHistory:SendCommandResponse(\"minimap on\") else P._mmo=true b:SetFadeAlpha(.4) C.mm:Hide() if not P.HUD:IsMapScreenOpen() and M:IsVisible() then M:ToggleVisibility() end ChatHistory:SendCommandResponse(\"minimap off\") end end b.OnControl=function(s,c,d) if (c==CONTROL_ACCEPT or c==CONTROL_PRIMARY) and not d then P._mmt() return true end return s._oc(s,c,d) end --M",
+    "label": "20.4 (local) Optional toggle to hide/show minimap(tap the sanity/brain badge to toggle)"
   },
   {
     "text": "Hey! I need help adjusting the coordinate values for a custom Don't Starve Together mobile console command. Because of my device's resolution and HUD scale, the virtual buttons/UI elements created by this script aren't aligning correctly with my screen. Here is my current one-liner command: [PASTE YOUR FULL COMMAND STRING HERE] I’ve attached a screenshot of my DST mobile game in-case you need to reference the layout. Can you calculate the math for the new positions/sizes and rewrite this into an updated, single-line command string that I can copy and paste directly into the game console?",
