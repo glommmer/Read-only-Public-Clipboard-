@@ -33,5 +33,15 @@
     "id": "mw904fljsmh5",
     "text": "Added an optional Minimap (20.4) Dpad fix. Only run if you have movement issues after running minimap.  Earlier zoom bug notification was a false alarm.",
     "ts": 1794213047289
+  },
+  {
+    "id": "mw9ue249ool9",
+    "text": "Added MISC Prevent other characters from picking up Winona's Winbot",
+    "ts": 1794263884857
+  },
+  {
+    "id": "mw9ueosuzgjy",
+    "text": "Added Testserver Free crafting and Godmode",
+    "ts": 1794263914255
   }
 ]
