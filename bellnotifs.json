@@ -46,7 +46,12 @@
   },
   {
     "id": "mwbjx50k8dt5",
-    "text": "Added (21) Auto-hitches/unhitches beefalo at grooming stations and alerts you with a bell if you mount without one. Dismount beefalo near a grooming station, to mount, just tap on the hitched beefalo! It will walk to the beefalo, unhitch, feed then mount in one go! DEPENDENCY: AUTORUN (12)",
+    "text": "Added (21) Auto-hitches/unhitches beefalo at grooming stations and alerts you with a bell if you mount without one. Dismount beefalo near a grooming station, to mount, just tap on the hitched beefalo! Character will walk to the beefalo, unhitch, feed then mount in one go! DEPENDENCY: AUTORUN (12)",
     "ts": 1794367231652
+  },
+  {
+    "id": "mwbqf2449dvi",
+    "text": "Fixed a crash caused by a tap handler on beefalo surviving character swaps",
+    "ts": 1794378145396
   }
 ]
