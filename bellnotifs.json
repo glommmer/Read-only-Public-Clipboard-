@@ -5,29 +5,9 @@
     "ts": 1794015325523
   },
   {
-    "id": "mw5qes02c467",
-    "text": "Fixed HP Bar's (17.5.1) Remote mistakenly labeled local. Added (17.5.2)  as an alternative remote hp bar option so the HP bar only works for mobs with 1400 MAX HP and above! Less clutter amirite?",
-    "ts": 1794015335234
-  },
-  {
-    "id": "mw6cnddfglgc",
-    "text": "Updated (7) Move Items (One tap to move items) Buttons are now hidden when there's no relevant storage for them, now auto activates when there is. The text is replaced with icons. MW Watch seemed to be missing from the clips but it is added now. Teehee",
-    "ts": 1794052687732
-  },
-  {
-    "id": "mw6cpvwoborr",
-    "text": "Fixed (10) Season and moon cycle info's  same function name with Move Items.",
-    "ts": 1794052805064
-  },
-  {
     "id": "mw7tylty2rz9",
     "text": "Added (20) minimap, go to https://jarlini69420-bit.github.io/Read-only-Public-Clipboard-/dst-button-placer  first, upload an uncropped screenshot then paste (20.1) in the Paste any script  box then tap find coordinates. The button that is generated is the center of the minimap. Copy the updated script then run it in your console. Repeat until you like where it sits!",
     "ts": 1794142231558
-  },
-  {
-    "id": "mw7u646lulat",
-    "text": "Removed Networking Messages for Auto-run and Farm tiller.",
-    "ts": 1794142581933
   },
   {
     "id": "mw9ue249ool9",
@@ -51,7 +31,12 @@
   },
   {
     "id": "mwbqf2449dvi",
-    "text": "Fixed a crash caused by a tap handler on beefalo surviving character swaps",
+    "text": "Fixed (21) Autohitch a crash caused by a tap handler on beefalo surviving character swaps",
     "ts": 1794378145396
+  },
+  {
+    "id": "mwc2qz3fa4ug",
+    "text": "Added (22) Brightshade Spawn Block rangefinder",
+    "ts": 1794398856748
   }
 ]
