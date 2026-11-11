@@ -21,7 +21,7 @@
   },
   {
     "id": "mw7tylty2rz9",
-    "text": "Added (20) minimap, go to https://jarlini69420-bit.github.io/Read-only-Public-Clipboard-/dst-button-placer  first, upload an uncropped screenshot then paste 20.1 in the Paste any script  box then tap find coordinates. The button that is generated is the center of the minimap. Copy the updated script then run it in your console. Repeat until you like where it sits!",
+    "text": "Added (20) minimap, go to https://jarlini69420-bit.github.io/Read-only-Public-Clipboard-/dst-button-placer  first, upload an uncropped screenshot then paste (20.1) in the Paste any script  box then tap find coordinates. The button that is generated is the center of the minimap. Copy the updated script then run it in your console. Repeat until you like where it sits!",
     "ts": 1794142231558
   },
   {
@@ -41,7 +41,12 @@
   },
   {
     "id": "mwanb4z0ou7m",
-    "text": "Updated minimap 20.2 to prevent possible movement or pinch zoom issues. Changed 20.4 to an optional toggle to hide and show the minimap! Tap the brain icon to hide/show",
+    "text": "Updated minimap (20.2) to prevent possible movement or pinch zoom issues. Changed (20.4) to an optional toggle to hide and show the minimap! Tap the brain icon to hide/show",
     "ts": 1794312457452
+  },
+  {
+    "id": "mwbjx50k8dt5",
+    "text": "Added (21) Auto-hitches/unhitches beefalo at grooming stations and alerts you with a bell if you mount without one. Dismount beefalo near a grooming station, to mount, just tap on the hitched beefalo! It will walk to the beefalo, unhitch, feed then mount in one go! DEPENDENCY: AUTORUN (12)",
+    "ts": 1794367231652
   }
 ]
