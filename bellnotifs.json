@@ -38,5 +38,10 @@
     "id": "mwc2qz3fa4ug",
     "text": "Added (22) Brightshade Spawn Block rangefinder",
     "ts": 1794398856748
+  },
+  {
+    "id": "mwcsskai5bsw",
+    "text": "Added missing mode labels for (10). Updated results to be sent as user chat messages so the info shared to everyone.",
+    "ts": 1794442600890
   }
 ]
