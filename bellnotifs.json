@@ -5,34 +5,9 @@
     "ts": 1794015325523
   },
   {
-    "id": "mw5qes02c467",
-    "text": "Fixed HP Bar's (17.5.1) Remote mistakenly labeled local. Added (17.5.2)  as an alternative remote hp bar option so the HP bar only works for mobs with 1400 MAX HP and above! Less clutter amirite?",
-    "ts": 1794015335234
-  },
-  {
-    "id": "mw6cnddfglgc",
-    "text": "Updated (7) Move Items (One tap to move items) Buttons are now hidden when there's no relevant storage for them, now auto activates when there is. The text is replaced with icons. MW Watch seemed to be missing from the clips but it is added now. Teehee",
-    "ts": 1794052687732
-  },
-  {
-    "id": "mw6cpvwoborr",
-    "text": "Fixed (10) Season and moon cycle info's  same function name with Move Items.",
-    "ts": 1794052805064
-  },
-  {
     "id": "mw7tylty2rz9",
-    "text": "Added (20) minimap, go to https://jarlini69420-bit.github.io/Read-only-Public-Clipboard-/dst-button-placer  first, upload an uncropped screenshot then paste 20.1 in the Paste any script  box then tap find coordinates. The button that is generated is the center of the minimap. Copy the updated script then run it in your console. Repeat until you like where it sits!",
+    "text": "Added (20) minimap, go to https://jarlini69420-bit.github.io/Read-only-Public-Clipboard-/dst-button-placer  first, upload an uncropped screenshot then paste (20.1) in the Paste any script  box then tap find coordinates. The button that is generated is the center of the minimap. Copy the updated script then run it in your console. Repeat until you like where it sits!",
     "ts": 1794142231558
-  },
-  {
-    "id": "mw7u646lulat",
-    "text": "Removed Networking Messages for Auto-run and Farm tiller.",
-    "ts": 1794142581933
-  },
-  {
-    "id": "mw904fljsmh5",
-    "text": "Added an optional Minimap (20.4) Dpad fix. Only run if you have movement issues after running minimap.  Earlier zoom bug notification was a false alarm.",
-    "ts": 1794213047289
   },
   {
     "id": "mw9ue249ool9",
@@ -43,5 +18,30 @@
     "id": "mw9ueosuzgjy",
     "text": "Added Testserver Free crafting and Godmode",
     "ts": 1794263914255
+  },
+  {
+    "id": "mwanb4z0ou7m",
+    "text": "Updated minimap (20.2) to prevent possible movement or pinch zoom issues. Changed (20.4) to an optional toggle to hide and show the minimap! Tap the brain icon to hide/show",
+    "ts": 1794312457452
+  },
+  {
+    "id": "mwbjx50k8dt5",
+    "text": "Added (21) Auto-hitches/unhitches beefalo at grooming stations and alerts you with a bell if you mount without one. Dismount beefalo near a grooming station, to mount, just tap on the hitched beefalo! Character will walk to the beefalo, unhitch, feed then mount in one go! DEPENDENCY: AUTORUN (12)",
+    "ts": 1794367231652
+  },
+  {
+    "id": "mwbqf2449dvi",
+    "text": "Fixed (21) Autohitch a crash caused by a tap handler on beefalo surviving character swaps",
+    "ts": 1794378145396
+  },
+  {
+    "id": "mwc2qz3fa4ug",
+    "text": "Added (22) Brightshade Spawn Block rangefinder",
+    "ts": 1794398856748
+  },
+  {
+    "id": "mwcsskai5bsw",
+    "text": "Added missing mode labels for (10). Updated results to be sent as user chat messages so the info shared to everyone.",
+    "ts": 1794442600890
   }
 ]
